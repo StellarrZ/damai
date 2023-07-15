@@ -79,7 +79,8 @@ class Concert(object):
     def enter_concert(self):
         print(u'###打开浏览器，进入大麦网###')
         if not exists('cookies.pkl'):   # 如果不存在cookie.pkl,就获取一下
-            self.driver = webdriver.Chrome(executable_path=self.driver_path)
+            # self.driver = webdriver.Chrome(executable_path=self.driver_path)
+            self.driver = webdriver.Chrome()
             self.get_cookie()
             print(u'###成功获取Cookie，重启浏览器###')
             self.driver.quit()
@@ -96,8 +97,10 @@ class Concert(object):
         # 更换等待策略为不等待浏览器加载完全就进行下一步操作
         capa = DesiredCapabilities.CHROME
         capa["pageLoadStrategy"] = "none"
-        self.driver = webdriver.Chrome(
-            executable_path=self.driver_path, options=options, desired_capabilities=capa)
+        # self.driver = webdriver.Chrome(
+        #     executable_path=self.driver_path, options=options, desired_capabilities=capa)
+        options.set_capability("pageLoadStrategy", "none")
+        self.driver = webdriver.Chrome(options=options)
         # 登录到具体抢购页面
         self.login()
         self.driver.refresh()
